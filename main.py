@@ -8,8 +8,8 @@ import pandas, smtplib, ssl, numpy
 FORM_SOURCE_PATH = "D:/test_form_2.pdf"
 DATA_SOURCE_PATH = "D:/data_test.xlsx"
 
-sender_email = "luismendoza2295@gmail.com"
-password = "ubxhwmxoxhnacicb"
+sender_email = input("Enter your email:")
+password = input("Enter your password:")
 
 reader = PdfReader(FORM_SOURCE_PATH)
 writer = PdfWriter()
