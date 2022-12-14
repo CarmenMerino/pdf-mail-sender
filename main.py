@@ -71,7 +71,27 @@ for i in range(0, len(companies)):
         text = message.as_string()
 
         # Log in to server using secure context and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        # context = ssl.create_default_context()
+        # with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        #     server.login(sender_email, password)
+        #     server.sendmail(sender_email, receiver_email, text)
+
+
+        # with smtplib.SMTP("smtp.office365.com", 587) as server:
+        #     server.ehlo()
+        #     server.starttls()
+        #     server.login(sender_email, password)
+        #     text = message.as_string()
+        #     server.sendmail(sender_email, receiver_email, text)
+        #     print('email sent')
+        #     server.quit()
+
+
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.ehlo()
+            server.starttls()
             server.login(sender_email, password)
+            text = message.as_string()
             server.sendmail(sender_email, receiver_email, text)
+            print('email sent')
+            server.quit()
