@@ -5,8 +5,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 import pandas, smtplib, ssl, numpy
 
-FORM_SOURCE_PATH = "D:/test_form_2.pdf"
-DATA_SOURCE_PATH = "D:/data_test.xlsx"
+FORM_SOURCE_PATH = "C:/Users/carme/OneDrive/Escritorio/PRONIED/prueba/constancia.pdf"
+DATA_SOURCE_PATH = "C:/Users/carme/OneDrive/Escritorio/PRONIED/prueba/PRUEBA2.xlsx"
 
 sender_email = input("Enter your email:")
 password = input("Enter your password:")
@@ -20,22 +20,22 @@ fields = reader.get_fields()
 writer.add_page(page)
 
 excel_data = pandas.read_excel(DATA_SOURCE_PATH)
-companies = excel_data["txt_company"]
-codes = excel_data["txt_code"]
-emails = excel_data["txt_mail"]
+nombres = excel_data["nombre"]
+codigos = excel_data["codigo"]
+correos = excel_data["correo"]
 
-for i in range(0, len(companies)):
-    company = companies[i] if not companies[i] is numpy.nan else '-'
-    code = codes[i] if not codes[i] is numpy.nan else '-'
-    receiver_email = emails[i]
+for i in range(0, len(nombres)):
+    nombre = nombres[i] if not nombres[i] is numpy.nan else '-'
+    codigo = codigos[i] if not codigos[i] is numpy.nan else '-'
+    receiver_email = correos[i]
 
     payload = {
-        "txt_company": company,
-        "txt_code": code
+        "nombre": nombre,
+        "codigo": codigo
     }
     
     writer.update_page_form_field_values(writer.pages[0], payload)
-    filename = f'D:/filled-{company}.pdf'
+    filename = f'constancia_{codigo}.pdf'
     # write "output" to PyPDF2-output.pdf
     with open(filename, "wb") as output_stream:
         writer.write(output_stream)
@@ -45,9 +45,10 @@ for i in range(0, len(companies)):
         message = MIMEMultipart()
         message["From"] = sender_email
         message["To"] = receiver_email
-        message["Subject"] = "Test invoice email"
+        message["Subject"] = "Constancia de participación taller ASITEC"
         message["Bcc"] = receiver_email  # Recommended for mass emails
-        body = "This is an email with attachment sent from Python"
+        message["Cc"] = 'comunicacionesasitec@pronied.gob.pe'
+        body = f'Buenas tardes {nombre}, gracias por haber participado en el taller de inducción de asistencia técnica del PRONIED. A continuación te adjuntamos tu certificado de participación. Te recomendamos usar el navegador Google Chrome para poder descargarlo.'
         # Add body to email
         message.attach(MIMEText(body, "plain"))
 
